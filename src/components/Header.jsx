@@ -6,12 +6,12 @@ export default function Header() {
     {
       label: "Dashboard",
       icon: HiOutlineHome,
-      href: "",
+      href: "/",
     },
     {
       label: "PP-12",
       icon: HiPhotograph,
-      href: "pp-12",
+      href: "merge",
     },
   ];
   return (

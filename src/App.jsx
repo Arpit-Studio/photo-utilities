@@ -1,4 +1,4 @@
-import { useRoutes } from "react-router-dom";
+import { RouterProvider, createHashRouter } from "react-router-dom";
 import "./App.css";
 import Error404 from "./components/Error404";
 import Layout from "./components/Layout";
@@ -8,21 +8,21 @@ import PP12 from "./components/pages/PP12";
 function App() {
   let routes = [
     {
-      path:process.env.PUBLIC_URL || "/",
+      path:"/",
       element: <Layout />,
       children: [
         { index: true, element: <Dashboard /> },
         {
-          path: "pp-12",
+          path: "merge",
           element: <PP12 />,
         },
         { path: "*", element: <Error404 /> },
       ],
     },
   ];
-  const elements=useRoutes(routes);
+  const router=createHashRouter(routes);
   return (
-      <>{elements}</>
+      <RouterProvider router={router} />
   );
 }
 
