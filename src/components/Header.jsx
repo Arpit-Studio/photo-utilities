@@ -33,7 +33,7 @@ export default function Header() {
                     isActive ? "text-gray-800 dark:text-gray-100" : null,
                   ])
                 }
-                to={nav.href}>
+                to={nav.href} end>
                 <nav.icon className="w-5 h-5" />
                 <span className="ml-4">{nav.label}</span>
               </NavLink>

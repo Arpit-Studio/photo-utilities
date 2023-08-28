@@ -27,7 +27,7 @@ export default function PP12() {
   return (
     <>
       <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-        Passport 12
+        Photo Grid Maker
       </h2>
       <div className="flex flex-col gap-3 mx-auto mt-4">
         {error ? <MergeError message={error} /> : null}
