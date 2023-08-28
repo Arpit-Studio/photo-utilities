@@ -8,12 +8,12 @@ import PP12 from "./components/pages/PP12";
 function App() {
   let routes = [
     {
-      path: "/",
+      path: "",
       element: <Layout />,
       children: [
         { index: true, element: <Dashboard /> },
         {
-          path: "/pp-12",
+          path: "pp-12",
           element: <PP12 />,
         },
         { path: "*", element: <Error404 /> },
