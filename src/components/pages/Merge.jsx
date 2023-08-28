@@ -3,7 +3,7 @@ import { pp12_merger } from "../../utilities/pp12";
 import MergeError from "../photo-editor/Error";
 import MergedImage from "../photo-editor/MergedImage";
 import PasteBoard from "../photo-editor/PasteBoard";
-export default function PP12() {
+export default function Merge() {
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
   const handlePaste = (e) => {

@@ -9,7 +9,7 @@ export default function Header() {
       href: "/",
     },
     {
-      label: "PP-12",
+      label: "Photo Merge",
       icon: HiPhotograph,
       href: "merge",
     },

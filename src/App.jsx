@@ -3,7 +3,7 @@ import "./App.css";
 import Error404 from "./components/Error404";
 import Layout from "./components/Layout";
 import Dashboard from "./components/pages/Dashboard";
-import PP12 from "./components/pages/PP12";
+import Merge from "./components/pages/Merge";
 
 function App() {
   let routes = [
@@ -14,7 +14,7 @@ function App() {
         { index: true, element: <Dashboard /> },
         {
           path: "merge",
-          element: <PP12 />,
+          element: <Merge />,
         },
         { path: "*", element: <Error404 /> },
       ],
