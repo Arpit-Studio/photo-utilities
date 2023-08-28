@@ -8,7 +8,7 @@ import PP12 from "./components/pages/PP12";
 function App() {
   let routes = [
     {
-      path: "",
+      path:process.env.PUBLIC_URL || "/",
       element: <Layout />,
       children: [
         { index: true, element: <Dashboard /> },
