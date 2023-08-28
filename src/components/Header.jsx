@@ -20,7 +20,7 @@ export default function Header() {
         <Link
           className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
           to="">
-          Studio99
+          ArpitStudio
         </Link>
         <ul className="mt-6">
           {navlinks.map((nav,index) => (
