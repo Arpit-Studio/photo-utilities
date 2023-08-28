@@ -6,12 +6,12 @@ export default function Header() {
     {
       label: "Dashboard",
       icon: HiOutlineHome,
-      href: "/",
+      href: "",
     },
     {
       label: "PP-12",
       icon: HiPhotograph,
-      href: "/pp-12",
+      href: "pp-12",
     },
   ];
   return (
@@ -19,7 +19,7 @@ export default function Header() {
       <div className="py-4 text-gray-500 dark:text-gray-400">
         <Link
           className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
-          to="/">
+          to="">
           Studio99
         </Link>
         <ul className="mt-6">
