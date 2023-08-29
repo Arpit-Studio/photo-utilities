@@ -5,7 +5,12 @@ const Color = require("color");
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      aspectRatio: {
+        '4/6': '4/6',
+        '6/4': '6/4',
+      },
+    },
     colors: {
       transparent: "transparent",
       white: "#ffffff",

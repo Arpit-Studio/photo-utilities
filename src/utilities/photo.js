@@ -1,134 +1,129 @@
-export async function merge(source) {
-  return new Promise(function (resolve, reject) {
+export const photo_sizes = [
+  {
+    label: "32x40 (12p)",
+    width: 28,
+    height: 1.25 * 28,
+    gutter: 25,
+    padding: {
+      top: 40,
+      left: 80,
+    },
+    rows: 4,
+    cols: 3,
+    landscape: false,
+    canvas: { width: 4, height: 6 },
+  },
+  {
+    label: "35x45 (8p)",
+    width: 35,
+    height: 45,
+    rows: 2,
+    cols: 4,
+    gutter: 20,
+    padding: {
+      top: 50,
+      left: 40,
+    },
+    landscape: true,
+    canvas: { width: 6, height: 4 },
+  },
+  {
+    label: "50x50 (2p)",
+    width: 50,
+    height: 50,
+    rows: 2,
+    cols: 1,
+    gutter: 100,
+    padding: {
+      top: 100,
+      left: 100,
+    },
+    landscape: true,
+    canvas: { width: 4, height: 6 },
+  },
+];
+export function mm2pixels(mm = 1, dpi = 300) {
+  return (mm / 25.4) * dpi;
+}
+
+export async function merge(
+  source,
+  photo_size,
+  hasBorder = true,
+  borderColor = "#d3d3d3",
+) {
+  const dpi = 300;
+  return new Promise(async function (resolve, reject) {
     try {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
-      const canvasWidth = 1200;
-      const canvasHeight = 1800;
+      const canvasWidth = photo_size.canvas.width * dpi;
+      const canvasHeight = photo_size.canvas.height * dpi;
       canvas.width = canvasWidth;
       canvas.height = canvasHeight;
-      const borderColor = "#d3d3d3"; // Light gray color
       ctx.fillStyle = "#ffffff"; // White color
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-      const gutter = 30;
-      const padding = 60;
-      const image = new Image();
-      image.src = source;
-      image.onload = function () {
-        const ratio = image.height / image.width;
-        const imageWidth = ((canvasWidth- padding- (gutter  * 4)) / 3);
-        const imageHeight = ratio*imageWidth;
-        
-        for (let i = 0; i < 12; i++) {
-          const row = Math.floor(i / 3);
-          const col = i % 3;
-          const x = col * imageWidth + (col * gutter) + padding;
-          const y = row * imageHeight + (row * gutter) + padding;
-          ctx.drawImage(image, x, y, imageWidth, imageHeight);
+      const image = await createImage(source);
+      const imageWidth = mm2pixels(photo_size.width, dpi);
+      const imageHeight = mm2pixels(photo_size.height, dpi);
+      for (let i = 0; i < photo_size.rows * photo_size.cols; i++) {
+        const row = Math.floor(i / photo_size.cols);
+        const col = i % photo_size.cols;
+        const x =
+          col * imageWidth + col * photo_size.gutter + photo_size.padding.left;
+        const y =
+          row * imageHeight + row * photo_size.gutter + photo_size.padding.top;
+        ctx.drawImage(image, x, y, imageWidth, imageHeight);
+        if (hasBorder) {
           ctx.strokeStyle = borderColor;
           ctx.lineWidth = 2;
           ctx.strokeRect(x, y, imageWidth, imageHeight);
         }
-        canvas.toBlob(function (blob) {
-          var URLObj = window.URL || window.webkitURL;
-          const blobUrl = URLObj.createObjectURL(blob);
-          return resolve(blobUrl);
-        }, "image/jpeg");
-      };
-      image.onerror = () => {
-        return reject("Something went wrong");
-      };
+      }
+      canvas.toBlob(function (blob) {
+        var URLObj = window.URL || window.webkitURL;
+        const blobUrl = URLObj.createObjectURL(blob);
+        return resolve(blobUrl);
+      }, "image/jpeg");
     } catch (e) {
-      return reject("Something went wrong");
+      return reject(e);
     }
   });
 }
 export const createImage = (url) =>
   new Promise((resolve, reject) => {
-    try{
-    const image = new Image();
-    image.addEventListener("load", () => resolve(image));
-    image.addEventListener("error", (error) => reject(error));
-    image.setAttribute("crossOrigin", "anonymous"); // needed to avoid cross-origin issues on CodeSandbox
-    image.src = url;
-    }catch(e){
-        reject(e);
+    try {
+      const image = new Image();
+      image.onload= ()=>resolve(image);
+      image.onerror=(err)=>reject(err)
+      //image.addEventListener("error", (error) => reject(error));
+      image.setAttribute("crossOrigin", "anonymous"); // needed to avoid cross-origin issues on CodeSandbox
+      image.src = url;
+    } catch (e) {
+      reject(e);
     }
   });
 
-export function getRadianAngle(degreeValue) {
-  return (degreeValue * Math.PI) / 180;
-}
-
-/**
- * Returns the new bounding area of a rotated rectangle.
- */
-export function rotateSize(width, height, rotation) {
-  const rotRad = getRadianAngle(rotation);
-
-  return {
-    width:
-      Math.abs(Math.cos(rotRad) * width) + Math.abs(Math.sin(rotRad) * height),
-    height:
-      Math.abs(Math.sin(rotRad) * width) + Math.abs(Math.cos(rotRad) * height),
-  };
-}
-
-/**
- * This function was adapted from the one in the ReadMe of https://github.com/DominicTobias/react-image-crop
- */
-export default function getCroppedImg(
-  imageSrc,
-  pixelCrop,
-  rotation = 0,
-  flip = { horizontal: false, vertical: false },
-) {
-    console.log(pixelCrop)
+export default function getCroppedImg(imageSrc, pixelCrop) {
   return new Promise(async (resolve, reject) => {
     try {
       const image = await createImage(imageSrc);
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
-
       if (!ctx) {
         return reject(null);
       }
-
-      const rotRad = getRadianAngle(rotation);
-
-      // calculate bounding box of the rotated image
-      const { width: bBoxWidth, height: bBoxHeight } = rotateSize(
-        image.width,
-        image.height,
-        rotation,
-      );
-
-      // set canvas size to match the bounding box
-      canvas.width = bBoxWidth;
-      canvas.height = bBoxHeight;
-
-      // translate canvas context to a central location to allow rotating and flipping around the center
-      ctx.translate(bBoxWidth / 2, bBoxHeight / 2);
-      ctx.rotate(rotRad);
-      ctx.scale(flip.horizontal ? -1 : 1, flip.vertical ? -1 : 1);
-      ctx.translate(-image.width / 2, -image.height / 2);
-
-      // draw rotated image
+      canvas.width = image.width;
+      canvas.height = image.height;
       ctx.drawImage(image, 0, 0);
-
       const croppedCanvas = document.createElement("canvas");
-
       const croppedCtx = croppedCanvas.getContext("2d");
-
       if (!croppedCtx) {
         return reject(null);
       }
-
-      // Set the size of the cropped canvas
+      
       croppedCanvas.width = pixelCrop.width;
       croppedCanvas.height = pixelCrop.height;
-
-      // Draw the cropped image onto the new canvas
       croppedCtx.drawImage(
         canvas,
         pixelCrop.x,
@@ -141,12 +136,14 @@ export default function getCroppedImg(
         pixelCrop.height,
       );
       croppedCanvas.toBlob((file) => {
-        
         file && resolve((window.URL || window.webkitURL).createObjectURL(file));
-        
       }, "image/jpeg");
     } catch (e) {
       reject(e);
     }
   });
+}
+
+export function makePrintable(img){
+
 }
