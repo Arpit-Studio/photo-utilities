@@ -33,10 +33,10 @@ export const photo_sizes = [
     height: 50,
     rows: 2,
     cols: 1,
-    gutter: 100,
+    gutter: 20,
     padding: {
-      top: 100,
-      left: 100,
+      top: 30,
+      left: 30,
     },
     landscape: true,
     canvas: { width: 4, height: 6 },

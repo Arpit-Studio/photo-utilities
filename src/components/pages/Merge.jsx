@@ -1,8 +1,10 @@
 import { useState } from "react";
 import MergedImage from "../photo-editor/MergedImage";
 import PasteBoard from "../photo-editor/PasteBoard";
+import SizeSelect from "../photo-editor/SizeSelect";
 export default function Merge() {
   const [image, setImage] = useState(null);
+  const [photoSize, setPhotoSize] = useState(0);
   const handlePaste = (e) => {
     try {
       const items = e.clipboardData.items;
@@ -10,19 +12,19 @@ export default function Merge() {
       var URLObj = window.URL || window.webkitURL;
       var source = URLObj.createObjectURL(blob);
       setImage(source);
-      
-    } catch (e) {
-    }
+    } catch (e) {}
   };
   return (
     <>
       <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
         Photo Grid Maker
       </h2>
-      <div className="flex flex-col gap-3 mx-auto mt-4">
-        
+      <div className="grid grid-cols-12 gap-4 mt-4">
         {image ? (
-          <MergedImage image={image} />
+          <>
+            <SizeSelect onChange={setPhotoSize} />
+            <MergedImage image={image} key={image + photoSize} size={photoSize} />
+          </>
         ) : (
           <PasteBoard handlePaste={handlePaste} />
         )}

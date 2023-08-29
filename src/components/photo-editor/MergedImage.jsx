@@ -1,58 +1,53 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { SketchPicker } from "react-color";
 import Cropper from "react-easy-crop";
 import getCroppedImg, { merge, photo_sizes } from "../../utilities/photo";
 
-export default function MergedImage({ image }) {
+export default function MergedImage({ image, size }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [hasBorder, setBorder] = useState(true);
   const [borderColor, setBorderColor] = useState("#E7E7E7");
-  const [photoSize, setPhotoSize] = useState(0);
+  const aspectratio = useMemo(
+    () => photo_sizes[size].width / photo_sizes[size].height,
+    [size],
+  );
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
-
-  const onCropComplete = useCallback(async (croppedArea, croppedAreaPixels) => {
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
-  }, []);
-  const changePhotoSize = useCallback((e) => {
-    setPhotoSize(e.target.value);
   }, []);
 
   useEffect(() => {
-    try {
-      if (!croppedAreaPixels) {
-        return;
-      }
+    if (croppedAreaPixels) {
       getCroppedImg(image, croppedAreaPixels)
         .then((img) => {
-          merge(img, photo_sizes[photoSize], hasBorder, borderColor)
+          merge(img, photo_sizes[size], hasBorder, borderColor)
             .then((mergedImage) => {
               setCroppedImage(mergedImage);
             })
             .catch((e) => {});
         })
         .catch((e) => {});
-    } catch (e) {}
-  }, [image, croppedAreaPixels, hasBorder, borderColor]);
+    }
+    return () => {};
+  }, [image, croppedAreaPixels, hasBorder, borderColor, size]);
   return (
-    <div className="grid grid-cols-12 gap-5">
+    <div className="col-span-12 grid grid-cols-12 gap-5">
       <div className="col-span-4 flex flex-col gap-3">
         <div className="relative w-full  aspect-square mx-auto">
           <Cropper
             image={image}
             crop={crop}
             zoom={zoom}
-            aspect={
-              photo_sizes[photoSize].width / photo_sizes[photoSize].height
-            }
+            aspect={aspectratio}
             zoomSpeed={0.01}
-            onCropChange={setCrop}
-            onCropComplete={onCropComplete}
-            onZoomChange={setZoom}
+            onCropChange={(e) => setCrop(e)}
+            onCropComplete={(e, f) => onCropComplete(e, f)}
+            onZoomChange={(e) => setZoom(e)}
           />
         </div>
-        <div className="relative w-[300px] mx-auto flex flex-col gap-3">
+        <div className="relative mx-auto flex flex-col gap-3 w-full">
           <div className="">
             <input
               id="default-range"
@@ -67,19 +62,8 @@ export default function MergedImage({ image }) {
               }}
             />
           </div>
-          <div className="grid grid-cols-2 gap-5 items-center justify-center">
-            <div className="col-span-1">
-              <select
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                onChange={changePhotoSize}>
-                {photo_sizes.map((size, index) => (
-                  <option value={index} key={index}>
-                    {size.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="col-span-1">
+          <div className="grid grid-cols-1 gap-5 items-center justify-center">
+            <div className="col-span-1 flex justify-center">
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
@@ -92,12 +76,12 @@ export default function MergedImage({ image }) {
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                 <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                  Put Border
+                  Has Border
                 </span>
               </label>
             </div>
             {hasBorder === true ? (
-              <div className="col-span-2 flex justify-center">
+              <div className="col-span-1 flex justify-center">
                 <SketchPicker
                   disableAlpha={true}
                   color={borderColor}
