@@ -21,8 +21,8 @@ export const photo_sizes = [
     cols: 4,
     gutter: 20,
     padding: {
-      top: 50,
-      left: 40,
+      top: 48,
+      left: 46,
     },
     landscape: true,
     canvas: { width: 6, height: 4 },
@@ -42,6 +42,7 @@ export const photo_sizes = [
     canvas: { width: 4, height: 6 },
   },
 ];
+export const defaultBorder="#777777"
 export function mm2pixels(mm = 1, dpi = 300) {
   return (mm / 25.4) * dpi;
 }
@@ -50,7 +51,7 @@ export async function merge(
   source,
   photo_size,
   hasBorder = true,
-  borderColor = "#d3d3d3",
+  borderColor = defaultBorder,
 ) {
   const dpi = 300;
   return new Promise(async function (resolve, reject) {
@@ -76,15 +77,19 @@ export async function merge(
         ctx.drawImage(image, x, y, imageWidth, imageHeight);
         if (hasBorder) {
           ctx.strokeStyle = borderColor;
-          ctx.lineWidth = 2;
+          ctx.lineWidth = 1;
           ctx.strokeRect(x, y, imageWidth, imageHeight);
         }
       }
-      canvas.toBlob(function (blob) {
-        var URLObj = window.URL || window.webkitURL;
-        const blobUrl = URLObj.createObjectURL(blob);
-        return resolve(blobUrl);
-      }, "image/jpeg");
+      canvas.toBlob(
+        function (blob) {
+          var URLObj = window.URL || window.webkitURL;
+          const blobUrl = URLObj.createObjectURL(blob);
+          return resolve(blobUrl);
+        },
+        "image/png",
+        1,
+      );
     } catch (e) {
       return reject(e);
     }
@@ -94,8 +99,8 @@ export const createImage = (url) =>
   new Promise((resolve, reject) => {
     try {
       const image = new Image();
-      image.onload= ()=>resolve(image);
-      image.onerror=(err)=>reject(err)
+      image.onload = () => resolve(image);
+      image.onerror = (err) => reject(err);
       //image.addEventListener("error", (error) => reject(error));
       image.setAttribute("crossOrigin", "anonymous"); // needed to avoid cross-origin issues on CodeSandbox
       image.src = url;
@@ -121,7 +126,7 @@ export default function getCroppedImg(imageSrc, pixelCrop) {
       if (!croppedCtx) {
         return reject(null);
       }
-      
+
       croppedCanvas.width = pixelCrop.width;
       croppedCanvas.height = pixelCrop.height;
       croppedCtx.drawImage(
@@ -144,6 +149,4 @@ export default function getCroppedImg(imageSrc, pixelCrop) {
   });
 }
 
-export function makePrintable(img){
-
-}
+export function makePrintable(img) {}

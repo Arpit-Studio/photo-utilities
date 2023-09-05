@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { SketchPicker } from "react-color";
 import Cropper from "react-easy-crop";
-import getCroppedImg, { merge, photo_sizes } from "../../utilities/photo";
+import getCroppedImg, { defaultBorder, merge, photo_sizes } from "../../utilities/photo";
 
 export default function MergedImage({ image, size }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [hasBorder, setBorder] = useState(true);
-  const [borderColor, setBorderColor] = useState("#E7E7E7");
+  const [borderColor, setBorderColor] = useState(defaultBorder);
   const aspectratio = useMemo(
     () => photo_sizes[size].width / photo_sizes[size].height,
     [size],
