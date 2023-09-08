@@ -1,7 +1,7 @@
 import { useState } from "react";
-import MergedImage from "../photo-editor/MergedImage";
-import PasteBoard from "../photo-editor/PasteBoard";
-import SizeSelect from "../photo-editor/SizeSelect";
+import MergedImage from "./components/MergedImage";
+import PasteBoard from "./components/PasteBoard";
+import SizeSelect from "./components/SizeSelect";
 export default function Merge() {
   const [image, setImage] = useState(null);
   const [photoSize, setPhotoSize] = useState(0);
@@ -17,7 +17,7 @@ export default function Merge() {
   return (
     <>
       <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-        Photo Grid Maker
+        Photo Maker
       </h2>
       <div className="grid grid-cols-12 gap-4 mt-4">
         {image ? (

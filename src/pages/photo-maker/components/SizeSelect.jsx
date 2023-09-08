@@ -1,4 +1,4 @@
-import { photo_sizes } from "../../utilities/photo";
+import { photo_sizes } from "../../../utilities/photo";
 
 export default function SizeSelect({ onChange }) {
   return (

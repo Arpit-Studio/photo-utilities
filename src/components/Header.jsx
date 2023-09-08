@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { HiOutlineHome, HiPhotograph } from "react-icons/hi";
+import { HiOutlineDocumentText, HiOutlineHome, HiViewGrid } from "react-icons/hi";
 import { Link, NavLink } from "react-router-dom";
 export default function Header() {
   const navlinks = [
@@ -9,10 +9,16 @@ export default function Header() {
       href: "/",
     },
     {
-      label: "Photo Merge",
-      icon: HiPhotograph,
-      href: "merge",
+      label: "Photo Maker",
+      icon: HiViewGrid,
+      href: "photo-maker",
     },
+    {
+      label: "Passport/Citizenship Merge",
+      icon: HiOutlineDocumentText,
+      href: "image-merger",
+    },
+    
   ];
   return (
     <aside className="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0">

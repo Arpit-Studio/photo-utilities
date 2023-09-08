@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { SketchPicker } from "react-color";
 import Cropper from "react-easy-crop";
-import getCroppedImg, { defaultBorder, merge, photo_sizes } from "../../utilities/photo";
+import getCroppedImg, { defaultBorder, merge, photo_sizes } from "../../../utilities/photo";
 
 export default function MergedImage({ image, size }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -101,7 +101,7 @@ export default function MergedImage({ image, size }) {
               className={`w-full aspect-square object-contain object-left-top`}
             />
           </div>
-        ) : null}{" "}
+        ) : null}
       </div>
     </div>
   );

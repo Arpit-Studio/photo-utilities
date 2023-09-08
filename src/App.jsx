@@ -2,8 +2,9 @@ import { RouterProvider, createHashRouter } from "react-router-dom";
 import "./App.css";
 import Error404 from "./components/Error404";
 import Layout from "./components/Layout";
-import Dashboard from "./components/pages/Dashboard";
-import Merge from "./components/pages/Merge";
+import Dashboard from "./pages/dashboard";
+import ImageMerge from "./pages/image-merge";
+import Merge from "./pages/photo-maker";
 
 function App() {
   let routes = [
@@ -13,8 +14,12 @@ function App() {
       children: [
         { index: true, element: <Dashboard /> },
         {
-          path: "merge",
+          path: "photo-maker",
           element: <Merge />,
+        },
+        {
+          path: "image-merger",
+          element: <ImageMerge />,
         },
         { path: "*", element: <Error404 /> },
       ],
