@@ -4,7 +4,9 @@ import useFiles from "../provider/Files";
 export default function FileSelect() {
   const { addFiles } = useFiles();
   const { getRootProps, getInputProps } = useDropzone({
-    accept: "image/*",
+    accept: {
+      'image/*': [".jpg",".jpeg",".png",".gif",".webp",".bmp"],
+    },
     onDrop: addFiles,
   });
 
