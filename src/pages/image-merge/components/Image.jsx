@@ -45,7 +45,7 @@ export default function Image({ id, name, url }) {
       <img
         src={url}
         alt={name}
-        className="aspect-square object-cover object-center"
+        className="aspect-square object-contain object-center"
       />
       <h3 className="absolute left-0 bottom-0 p-2 text-xs font-medium bg-gray-700 text-white bg-opacity-80 uppercase w-full text-center break-words">
         {name}
