@@ -16,7 +16,7 @@ export default function Merge() {
   };
   return (
     <>
-      <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+      <h2 className="my-6 text-2xl font-semibold text-gray-200">
         Photo Maker
       </h2>
       <div className="grid grid-cols-12 gap-4 mt-4">

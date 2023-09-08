@@ -2,11 +2,11 @@ import { createImage } from "./createImage";
 
 export default function imageMerge(
   images,
+  dpi = 150,
+  padding = 100,
+  gap = 10,
   paper_size = { label: "A4", width: 8.3, height: 11.7 },
 ) {
-  const dpi = 150;
-  const padding = 100;
-  const gap = 10;
   return new Promise(async (resolve, reject) => {
     const canvasArr = [];
     function createCanvas() {
@@ -66,7 +66,7 @@ export default function imageMerge(
       const y =
         i % 2 === 0
           ? canvas.height / 2 - imgHeight - gap / 2
-          : canvas.height / 2 + gap;
+          : canvas.height / 2 + gap /2;
       ctx.drawImage(img, x, y, imgWidth, imgHeight);
       if (i % 2 === 1) {
         await feedNewPage(canvas, ctx);

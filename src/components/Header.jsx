@@ -21,10 +21,10 @@ export default function Header() {
     
   ];
   return (
-    <aside className="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0">
-      <div className="py-4 text-gray-500 dark:text-gray-400">
+    <aside className="z-20 hidden w-64 overflow-y-auto  bg-gray-800 md:block flex-shrink-0">
+      <div className="py-4  text-gray-400">
         <Link
-          className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
+          className="ml-6 text-lg font-bold  text-gray-200"
           to="">
           ArpitStudio
         </Link>
@@ -34,9 +34,9 @@ export default function Header() {
               <NavLink
                 className={({ isActive, isPending }) =>
                   clsx([
-                    "realtive inline-flex items-center w-full text-sm font-semibold  transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200",
+                    "realtive inline-flex items-center w-full text-sm font-semibold  transition-colors duration-150  hover:text-gray-200",
                     isActive ?"before:content-[''] before:absolute before:inset-y-0 before:left-0 before:w-1 before:bg-purple-600 before:rounded-tr-lg before:rounded-br-lg":null,
-                    isActive ? "text-gray-800 dark:text-gray-100" : null,
+                    isActive ? "text-gray-100" : null,
                   ])
                 }
                 to={nav.href} end>

@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { SketchPicker } from "react-color";
 import Cropper from "react-easy-crop";
-import getCroppedImg, { defaultBorder, merge, photo_sizes } from "../../../utilities/photo";
+import getCroppedImg, {
+  defaultBorder,
+  merge,
+  photo_sizes,
+} from "../../../utilities/photo";
 
 export default function MergedImage({ image, size }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -20,17 +24,19 @@ export default function MergedImage({ image, size }) {
 
   useEffect(() => {
     if (croppedAreaPixels) {
-      getCroppedImg(image, croppedAreaPixels)
-        .then((img) => {
-          merge(img, photo_sizes[size], hasBorder, borderColor)
-            .then((mergedImage) => {
-              setCroppedImage(mergedImage);
-            })
-            .catch((e) => {});
-        })
-        .catch((e) => {});
+      const timeout = setTimeout(() => {
+        getCroppedImg(image, croppedAreaPixels)
+          .then((img) => {
+            merge(img, photo_sizes[size], hasBorder, borderColor)
+              .then((mergedImage) => {
+                setCroppedImage(mergedImage);
+              })
+              .catch((e) => {});
+          })
+          .catch((e) => {});
+      }, 500);
+      return () => clearTimeout(timeout);
     }
-    return () => {};
   }, [image, croppedAreaPixels, hasBorder, borderColor, size]);
   return (
     <div className="col-span-12 grid grid-cols-12 gap-5">
@@ -56,7 +62,7 @@ export default function MergedImage({ image, size }) {
               step="0.05"
               min="1"
               max="3"
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+              className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-gray-700"
               onChange={(e) => {
                 setZoom(e.target.value);
               }}
@@ -74,8 +80,8 @@ export default function MergedImage({ image, size }) {
                     setBorder(e.target.checked);
                   }}
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                <div className="w-11 h-6 peer-focus:outline-none peer-focus:ring-4   rounded-full peer bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-blue-600"></div>
+                <span className="ml-3 text-sm font-medium text-gray-300">
                   Has Border
                 </span>
               </label>

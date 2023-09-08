@@ -1,7 +1,7 @@
 export default function Error404() {
   return (
     <>
-      <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+      <h2 className="my-6 text-2xl font-semibold text-gray-200">
         Error 404
       </h2>
       <div className="mt-4">
