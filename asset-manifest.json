@@ -1,11 +1,11 @@
 {
   "files": {
-    "main.css": "/photo-utilities/static/css/main.0dac549a.css",
-    "main.js": "/photo-utilities/static/js/main.959f8905.js",
+    "main.css": "/photo-utilities/static/css/main.621b951c.css",
+    "main.js": "/photo-utilities/static/js/main.775bdd2b.js",
     "index.html": "/photo-utilities/index.html"
   },
   "entrypoints": [
-    "static/css/main.0dac549a.css",
-    "static/js/main.959f8905.js"
+    "static/css/main.621b951c.css",
+    "static/js/main.775bdd2b.js"
   ]
 }
