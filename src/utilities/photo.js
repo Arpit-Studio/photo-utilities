@@ -137,4 +137,3 @@ export default function getCroppedImg(imageSrc, pixelCrop) {
   });
 }
 
-export function makePrintable(img) {}

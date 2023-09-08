@@ -4,7 +4,7 @@ export default function imageMerge(
   images,
   paper_size = { label: "A4", width: 8.3, height: 11.7 },
 ) {
-  const dpi = 100;
+  const dpi = 150;
   const padding = 100;
   const gap = 10;
   return new Promise(async (resolve, reject) => {

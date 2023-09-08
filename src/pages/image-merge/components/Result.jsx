@@ -20,7 +20,7 @@ export default function MergeResult() {
   const downloadAllFiles = useCallback(() => {
     mergedImages.length > 0 &&
       mergedImages.forEach((img, index) => {
-        saveAs(img, `merged_${index}.jpg`);
+        saveAs(img, `merged_${index + 1}.jpg`);
       });
   }, [mergedImages]);
   return (
@@ -51,7 +51,7 @@ export default function MergeResult() {
             <img src={img} key={index} alt={`Merged Images - ${index + 1}`} />
             <a
               href={img}
-              download={`${index + 1}.jpg`}
+              download={`merged_${index + 1}.jpg`}
               className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 text-white p-2 rounded-md bg-black bg-opacity-50 group-hover:opacity-100 opacity-0 transition-opacity hover:bg-opacity-80">
               <HiDownload className="w-8 h-8" />
             </a>
