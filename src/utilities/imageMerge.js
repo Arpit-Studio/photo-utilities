@@ -26,7 +26,7 @@ export default function imageMerge(
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
       return [canvas, ctx];
     }
-    function pushToOutputCanvasArr(canvas, arr) {
+    function pushToOutput(canvas, arr) {
       return new Promise(function (resolve, reject) {
         canvas.toBlob(
           function (blob) {
@@ -104,29 +104,8 @@ export default function imageMerge(
           break;
       }
       ctx.drawImage(canvasArr[i], x, y);
-      await pushToOutputCanvasArr(canvas, pageCanvasArr);
+      await pushToOutput(canvas, pageCanvasArr);
     }
-    // for (let i = 0; i < images.length; i++) {
-    //   const image = images[i];
-    //   if (canvas === null) {
-    //     [canvas, ctx] = createCanvas();
-    //   }
-    //   const img = await createImage(image.url);
-    //   const [imgWidth, imgHeight] = recalculateImageDimension(img);
-    //   const x = (canvas.width - imgWidth) / 2;
-    //   const y =
-    //     i % 2 === 0
-    //       ? canvas.height / 2 - imgHeight - gap / 2
-    //       : canvas.height / 2 + gap / 2;
-    //   ctx.drawImage(img, x, y, imgWidth, imgHeight);
-    //   if (i % 2 === 1) {
-    //     await feedNewPage(canvas, ctx);
-    //     canvas = null;
-    //   }
-    // }
-    // if (canvas !== null) {
-    //   await pushCanvasToArr(canvas);
-    // }
     resolve(pageCanvasArr);
   });
 }

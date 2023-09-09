@@ -25,7 +25,7 @@ export default function MergeResult() {
     function () {
       setLoading(true);
       const timeout = setTimeout(() => {
-        imageMerge(files, 100, parseInt(padding), parseInt(gap), align, parseInt(per_page))
+        imageMerge(files, 300, parseInt(padding), parseInt(gap), align, parseInt(per_page))
           .then((arr) => {
             setMergedImages(arr);
             setLoading(false);
