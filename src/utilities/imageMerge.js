@@ -65,9 +65,12 @@ export default function imageMerge(
         heights[j] = h;
       }
       const maxWidth = Math.max(...widths);
-      const totalHeight =
-        parseInt(heights.reduce((partialSum, a) => partialSum + a, 0)) +
-        parseInt(gap);
+      const totalHeight = parseInt(
+        heights.reduce(
+          (partialSum, a) => partialSum + a,
+          parseInt(gap) * (imgs.length - 1),
+        ),
+      );
       const tmpCanvas = document.createElement("canvas");
       const tmpCxt = tmpCanvas.getContext("2d");
       tmpCanvas.width = maxWidth;
