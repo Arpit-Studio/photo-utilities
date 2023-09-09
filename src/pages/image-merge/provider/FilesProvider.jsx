@@ -18,6 +18,9 @@ export default function FilesProvider({ children }) {
     },
     [files],
   );
+  const clearFiles=useCallback(()=>{
+    setFileItems([]);
+  },[setFileItems])
   const moveFile = useCallback(
     (id, atIndex) => {
       const { file, index } = findFile(id);
@@ -66,8 +69,9 @@ export default function FilesProvider({ children }) {
       findFile,
       screen,
       setScreen,
+      clearFiles,
     }),
-    [addFiles, files, findFile, moveFile, removeFile, screen, setFiles],
+    [addFiles, clearFiles, files, findFile, moveFile, removeFile, screen, setFiles],
   );
   return (
     <DndProvider backend={HTML5Backend}>

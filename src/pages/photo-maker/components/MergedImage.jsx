@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { SketchPicker } from "react-color";
 import Cropper from "react-easy-crop";
+import Loading from "../../../components/Loading";
 import getCroppedImg, {
   defaultBorder,
   merge,
@@ -11,6 +12,7 @@ export default function MergedImage({ image, size }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [hasBorder, setBorder] = useState(true);
   const [borderColor, setBorderColor] = useState(defaultBorder);
+  const [loading, setLoading] = useState(true);
   const aspectratio = useMemo(
     () => photo_sizes[size].width / photo_sizes[size].height,
     [size],
@@ -24,12 +26,14 @@ export default function MergedImage({ image, size }) {
 
   useEffect(() => {
     if (croppedAreaPixels) {
+      setLoading(true);
       const timeout = setTimeout(() => {
         getCroppedImg(image, croppedAreaPixels)
           .then((img) => {
             merge(img, photo_sizes[size], hasBorder, borderColor)
               .then((mergedImage) => {
                 setCroppedImage(mergedImage);
+                setLoading(false);
               })
               .catch((e) => {});
           })
@@ -80,7 +84,7 @@ export default function MergedImage({ image, size }) {
                     setBorder(e.target.checked);
                   }}
                 />
-                <div className="w-11 h-6 peer-focus:outline-none peer-focus:ring-4   rounded-full peer bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-blue-600"></div>
+                <div className="w-11 h-6 peer-focus:outline-none rounded-full peer bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-blue-600"></div>
                 <span className="ml-3 text-sm font-medium text-gray-300">
                   Has Border
                 </span>
@@ -98,16 +102,21 @@ export default function MergedImage({ image, size }) {
           </div>
         </div>
       </div>
+
       <div className="col-span-8">
-        {croppedImage ? (
-          <div className="">
-            <img
-              src={croppedImage}
-              alt="Merged"
-              className={`w-full aspect-square object-contain object-left-top`}
-            />
-          </div>
-        ) : null}
+        {loading ? (
+          <Loading />
+        ) : (
+          (croppedImage && (
+            <div className="">
+              <img
+                src={croppedImage}
+                alt="Merged"
+                className={`w-full aspect-square object-contain object-left-top`}
+              />
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
