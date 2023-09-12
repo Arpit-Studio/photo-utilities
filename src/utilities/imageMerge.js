@@ -43,11 +43,11 @@ export default function imageMerge(
     function recalculateImageDimension(img) {
       let imgWidth = img.width;
       let imgHeight = img.height;
-      if (img.width > canvasWidth - padding * 2) {
+      //if (img.width > canvasWidth - padding * 2) {
         const ratio = img.height / img.width;
         imgWidth = canvasWidth - padding * 2;
         imgHeight = ratio * imgWidth;
-      }
+      //}
       return [imgWidth, imgHeight];
     }
 

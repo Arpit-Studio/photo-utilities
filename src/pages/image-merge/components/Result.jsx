@@ -17,6 +17,7 @@ export default function MergeResult() {
   const { files, setScreen } = useFiles();
   const [loading, setLoading] = useState(true);
   const [mergedImages, setMergedImages] = useState([]);
+  const [dpi, setDPI] = useState(100);
   const [padding, setPadding] = useState(100);
   const [gap, setGap] = useState(20);
   const [align, setAlign] = useState("center");
@@ -25,7 +26,14 @@ export default function MergeResult() {
     function () {
       setLoading(true);
       const timeout = setTimeout(() => {
-        imageMerge(files, 300, parseInt(padding), parseInt(gap), align, parseInt(per_page))
+        imageMerge(
+          files,
+          parseInt(dpi),
+          parseInt(padding),
+          parseInt(gap),
+          align,
+          parseInt(per_page),
+        )
           .then((arr) => {
             setMergedImages(arr);
             setLoading(false);
@@ -34,7 +42,7 @@ export default function MergeResult() {
       }, 300);
       return () => clearTimeout(timeout);
     },
-    [align, files, gap, padding, per_page],
+    [align, dpi, files, gap, padding, per_page],
   );
   const downloadAllFiles = useCallback(() => {
     mergedImages.length > 0 &&
@@ -67,7 +75,7 @@ export default function MergeResult() {
             <HiArrowLeft /> Back
           </button>
         </div>
-        <div className="flex flex-row gap-5 flex-1 items-center">
+        <div className="flex flex-row gap-5 flex-1 items-center  whitespace-nowrap">
           <div className="inline-flex rounded-md shadow-sm" role="group">
             <button
               type="button"
@@ -97,49 +105,65 @@ export default function MergeResult() {
               <MdVerticalAlignBottom className="w-5 h-5" />
             </button>
           </div>
-          <div>
-            <select
-              id="per_page"
-              onChange={(e) => setPerPage(e.target.value)}
-              className="border-none text-sm rounded-lg  block w-full px-4 py-2.5 bg-gray-700 placeholder-gray-400 text-white" value={per_page}>
-              <option value={1}>1/page</option>
-              <option value={2}>2/page</option>
-            </select>
-          </div>
-          <div>
-            <label>Edge Gutter - {padding}</label>
+          <div className="flex flex-row gap-2 items-center">
+            <label>Per Page</label>
             <input
-              type="range"
+              type="number"
               step={1}
-              min={0}
+              min={1}
+              max={4}
+              onChange={(e) => setPerPage(e.target.value)}
+              value={per_page}
+              className="border-none text-sm rounded-lg  block w-24 px-4 py-2.5 bg-gray-700 placeholder-gray-400 text-white"
+            />
+            
+          </div>
+          <div className="flex gap-2 items-center">
+            <label>DPI</label>
+            <input
+              type="number"
+              step={50}
+              min={100}
               max={300}
-              onChange={(e) => setPadding(e.target.value)}
-              value={padding}
-              className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-gray-700"
+              onChange={(e) => setDPI(e.target.value)}
+              value={dpi}
+              className="border-none text-sm rounded-lg  block w-24 px-4 py-2.5 bg-gray-700 placeholder-gray-400 text-white"
             />
           </div>
-          <div>
-            <label>Spacing - {gap}</label>
+          <div className="flex gap-2 items-center">
+            <label>Edge</label>
             <input
-              type="range"
+              type="number"
               step={1}
               min={0}
-              max={200}
+              //max={1000}
+              onChange={(e) => setPadding(e.target.value)}
+              value={padding}
+              className="border-none text-sm rounded-lg  block w-24 px-4 py-2.5 bg-gray-700 placeholder-gray-400 text-white"
+            />
+          </div>
+          <div className="flex gap-2 items-center">
+            <label>Gap</label>
+            <input
+              type="number"
+              step={1}
+              min={0}
+              //max={200}
               onChange={(e) => setGap(e.target.value)}
               value={gap}
-              className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-gray-700"
+              className="border-none text-sm rounded-lg  block w-24 px-4 py-2.5 bg-gray-700 placeholder-gray-400 text-white"
             />
           </div>
         </div>
         <div className="flex justify-end gap-5">
-        <button
+          <button
             type="button"
             className="text-white  font-medium rounded-lg text-sm px-5 py-2.5 bg-blue-600 hover:bg-blue-700 focus:outline-none flex flex-row items-center gap-3"
             onClick={downloadPDF}>
             Download PDF <AiOutlineFilePdf className="w-5 h-5" />
           </button>
-        
-        <button
+
+          <button
             type="button"
             className="text-white font-medium rounded-lg text-sm px-5 py-2.5 bg-blue-600 hover:bg-blue-700 focus:outline-none flex flex-row items-center gap-3"
             onClick={downloadAllFiles}>
