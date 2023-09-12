@@ -17,9 +17,9 @@ export default function MergeResult() {
   const { files, setScreen } = useFiles();
   const [loading, setLoading] = useState(true);
   const [mergedImages, setMergedImages] = useState([]);
-  const [dpi, setDPI] = useState(100);
-  const [padding, setPadding] = useState(100);
-  const [gap, setGap] = useState(20);
+  const [dpi, setDPI] = useState(300);
+  const [padding, setPadding] = useState(300);
+  const [gap, setGap] = useState(50);
   const [align, setAlign] = useState("center");
   const [per_page, setPerPage] = useState(2);
   useEffect(
@@ -39,7 +39,7 @@ export default function MergeResult() {
             setLoading(false);
           })
           .catch((err) => {});
-      }, 300);
+      }, 100);
       return () => clearTimeout(timeout);
     },
     [align, dpi, files, gap, padding, per_page],
